@@ -1,0 +1,52 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+}
+
+input {
+  outline: none !important;
+  border: none !important;
+}
+.navlink {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: border-left-color ease-in-out 0.2s;
+  color: #8e8b90;
+  font-size: 16px;
+  gap: 2rem;
+  padding: 0.5rem;
+  transition: all ease-in-out 0.2s;
+  font-weight: bold;
+}
+
+.navlink:hover {
+  background: #eae2f86f;
+  border-radius: 5px;
+}
+.active-class {
+  background: #eae2f8;
+  border-radius: 5px;
+  color: #5d0cbb;
+  font-weight: bold;
+}
+
+.icon {
+  transition: all ease-out 1s;
+  font-size: 20px;
+}
+
+.chakra-pin-input {
+  border: 2px solid #bac0ca !important;
+}
