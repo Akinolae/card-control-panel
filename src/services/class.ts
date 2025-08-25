@@ -2,7 +2,7 @@
 
 import { apiCallFunction } from "./apiFunctionCall";
 import { CREATE_CLASS } from "./graphql/mutation";
-import { fetchSchoolConfig } from "./auth";
+// import { fetchSchoolConfig } from "./auth";
 
 const createClass = async (className: string) => {
   try {
@@ -14,7 +14,7 @@ const createClass = async (className: string) => {
       },
     });
 
-    await fetchSchoolConfig();
+    // await fetchSchoolConfig();
   } catch (error: any) {
     throw error?.message;
   }

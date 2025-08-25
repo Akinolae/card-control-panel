@@ -1,22 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useContext } from "react";
 import AuthWrapper from "./AuthWrapper";
-import { Link } from "react-router-dom";
+import { AppContext } from "../../Context";
 import { Box, Text } from "@chakra-ui/react";
 import LoginForm from "../../Forms/Auth/LoginForm";
 import { useMutation } from "@tanstack/react-query";
+import { storeCookie } from "../../utils/cookieUtils";
+import { Link, useNavigate } from "react-router-dom";
 import { signInWithGoogle } from "../../services/firebase";
 import { CutomButton, CustomStepper } from "../../components/ui";
-import { storeCookie } from "../../utils/cookieUtils";
 
 const Login = () => {
+  const history = useNavigate();
+  const context = useContext(AppContext);
+  const setValue: React.Dispatch<React.SetStateAction<any>> = context
+    ? context[1]
+    : () => {};
+
   const { mutate } = useMutation({
     mutationFn: () => signInWithGoogle(),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       const { stsTokenManager }: any = data;
       const { accessToken }: { accessToken: string; refreshToken: string } =
         stsTokenManager;
 
-      storeCookie(accessToken);
+      const { displayName, email, emailVerified, photoURL } = data;
+
+      await Promise.all([
+        setValue({
+          key: "user",
+          value: { name: displayName, email, emailVerified, photoURL },
+        }),
+        setValue({ key: "isSignedIn", value: true }),
+        storeCookie(accessToken),
+      ]).then(() => history("/dashboard"));
     },
   });
 

@@ -2,7 +2,7 @@
 
 import { apiCallFunction } from "./apiFunctionCall";
 import { createStudents } from "./graphql/mutation";
-import { fetchSchoolConfig } from "./auth";
+// import { fetchSchoolConfig } from "./auth";
 
 const addStudent = async (params: any) => {
   const { class_id, student } = params;
@@ -17,7 +17,7 @@ const addStudent = async (params: any) => {
       },
     });
 
-    await fetchSchoolConfig();
+    // await fetchSchoolConfig();
   } catch (error: any) {
     throw error.message;
   }

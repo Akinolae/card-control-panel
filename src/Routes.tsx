@@ -5,29 +5,17 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
-import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Students from "./pages/pages/Dashboard/Students";
 import UserDashboard from "./pages/pages/Dashboard/Dashboard";
 import Admins from "./pages/pages/Dashboard/Admins";
 
 const route = [
   {
-    path: "/",
-    component: <Register />,
-    public: true,
-  },
-  {
     path: "/login",
     component: <Login />,
-    public: true,
-  },
-  {
-    path: "/forgotPassword",
-    component: <ForgotPassword />,
     public: true,
   },
   {

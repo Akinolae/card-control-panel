@@ -2,11 +2,11 @@
 import { ErrorComponent } from "../../components/ui/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {
-  confirmSignUp,
-  forgotPassword,
-  forgotPasswordChange,
-} from "../../services/auth";
+// import {
+//   confirmSignUp,
+//   forgotPassword,
+//   forgotPasswordChange,
+// } from "../../services/auth";
 import { CutomButton, PinInputComponent } from "../../components/ui";
 import { Box, Text, useToast } from "@chakra-ui/react";
 import { useCountDown } from "../../hooks/useCountDown";
@@ -38,13 +38,13 @@ const PassCode = (props: passCodeProps) => {
     setError("");
     try {
       if (!isEmailVerify) {
-        await forgotPasswordChange({
-          code,
-          email,
-          password: e?.password,
-        });
+        // await forgotPasswordChange({
+        //   code,
+        //   email,
+        //   password: e?.password,
+        // });
       } else {
-        await confirmSignUp({ code, email, password });
+        // await confirmSignUp({ code, email, password });
       }
 
       toast({
@@ -71,7 +71,7 @@ const PassCode = (props: passCodeProps) => {
   const resend = async () => {
     try {
       if (email) {
-        await forgotPassword(email);
+        // await forgotPassword(email);
       } else {
         throw new Error("Email is required");
       }

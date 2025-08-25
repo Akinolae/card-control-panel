@@ -1,37 +1,59 @@
-import intState from "../initialState";
-import { createSlice } from "@reduxjs/toolkit";
+import { Actions } from "./actions";
+import intState, { InitialState } from "../initialState";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-const reducers = createSlice({
-  name: "user",
-  initialState: intState,
-  reducers: {
-    updateUser: (state, data) => {
-      state.payLoad = data.payload;
-    },
-    updateSignIn: (state, data) => {
-      state.isSignedIn = data.payload;
-    },
-    updateClasses: (state, data) => {
-      state.classes = data.payload;
-    },
-    updateStudents: (state, data) => {
-      state.students = data.payload;
-    },
-    updateAdmins: (state, data) => {
-      state.admins = data.payload;
-    },
-    resetState: () => {
-      return intState;
-    },
-  },
-});
+const GLOBAL_STATE_KEY_PREFIX = "globalState";
+const dataKey = Object.keys(intState).join("|");
+type Keys = typeof dataKey;
 
-export const {
-  updateUser,
-  resetState,
-  updateSignIn,
-  updateClasses,
-  updateStudents,
-  updateAdmins,
-} = reducers.actions;
-export default reducers.reducer;
+const reducer = (
+  appState: InitialState,
+  action: Actions,
+  payLoad: unknown
+): InitialState => {
+  switch (action) {
+    case "SET_USER":
+      return {
+        ...appState,
+        user: payLoad,
+      };
+    case "SET_CARDS":
+      return {
+        ...appState,
+        cards: payLoad as unknown[],
+      };
+    case "SET_CARD_TRANSACTIONS":
+      return {
+        ...appState,
+        cardTransactions: payLoad as unknown[],
+      };
+    case "SET_SIGN_IN":
+      return {
+        ...appState,
+        isSignedIn: payLoad as boolean,
+      };
+    default:
+      return appState;
+  }
+};
+
+export const useDataReducer = (key: Keys) => {
+  const { data } = useQuery<InitialState>({
+    queryKey: [GLOBAL_STATE_KEY_PREFIX, key],
+    staleTime: Infinity
+  });
+
+  return data;
+};
+
+export const useStateDispatch = () => {
+  const queryClient = useQueryClient();
+  const dispatch = (action: Actions, key: string, data: unknown) => {
+    queryClient.setQueryData([key], (oldData: InitialState) => {
+      return reducer(oldData, action, data);
+    });
+  };
+
+  return dispatch;
+};
+export default reducer;
