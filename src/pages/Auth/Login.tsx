@@ -3,10 +3,9 @@ import AuthWrapper from "./AuthWrapper";
 import { Box, Flex, useToast } from "@chakra-ui/react";
 import LoginForm from "../../Forms/Auth/LoginForm";
 import { useMutation } from "@tanstack/react-query";
-import { storeCookie } from "../../utils/cookieUtils";
 import { useNavigate } from "react-router-dom";
-import { signInWithGoogle } from "../../services/firebase";
 import { CustomStepper } from "../../components/ui";
+import { signIn } from "../../services/auth";
 
 const Login = () => {
   const history = useNavigate();
@@ -16,25 +15,8 @@ const Login = () => {
   });
 
   const { mutate } = useMutation({
-    mutationFn: () => signInWithGoogle(),
-    onSuccess: async (data) => {
-      const { stsTokenManager }: any = data;
-      const { accessToken }: { accessToken: string; refreshToken: string } =
-        stsTokenManager;
-
-      const { displayName, email, emailVerified, photoURL } = data;
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          name: displayName,
-          email,
-          emailVerified,
-          photoURL,
-          isSignedIn: true,
-        })
-      );
-      storeCookie(accessToken);
+    mutationFn: () => signIn(),
+    onSuccess: async () => {
       toast({
         description: "You've logged in successfully",
         status: "success",
