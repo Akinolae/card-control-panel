@@ -25,7 +25,7 @@ const Dashboard = () => {
           pl={"5%"}
           pr={"5%"}
         >
-          <DashBoardHeaderWrapper text={"Dashboard"} />
+          <DashBoardHeaderWrapper />
 
           <Outlet />
         </Box>

@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  getAuth,
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -26,4 +31,22 @@ const signInWithGoogle = async () => {
     throw error;
   }
 };
-export { app, auth, signInWithGoogle };
+
+const signInWithGitHub = async () => {
+  const provider = new GithubAuthProvider();
+
+  provider.setCustomParameters({
+    allow_signup: "false",
+  });
+  try {
+    const result = await signInWithPopup(auth, provider);
+    // The signed-in user info.
+    const user = result.user;
+    return user;
+  } catch (error) {
+    console.error("Error signing in with GitHub:", error);
+    throw error;
+  }
+};
+
+export { app, auth, signInWithGoogle, signInWithGitHub };

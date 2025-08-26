@@ -17,12 +17,8 @@ export const AppContext = React.createContext<
 function Context({ children }: ContextProps) {
   const [state, setState] = React.useState<InitialState>(intState);
 
-  console.log(state, "state");
-  
   const setStateValue = (prop: SetStateProp): void => {
     const { key, value } = prop;
-
-    console.log(key, value, "keyvalue");
 
     setState((prevState) => ({
       ...prevState,

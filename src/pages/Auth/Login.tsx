@@ -1,21 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext } from "react";
 import AuthWrapper from "./AuthWrapper";
-import { AppContext } from "../../Context";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, useToast } from "@chakra-ui/react";
 import LoginForm from "../../Forms/Auth/LoginForm";
 import { useMutation } from "@tanstack/react-query";
 import { storeCookie } from "../../utils/cookieUtils";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signInWithGoogle } from "../../services/firebase";
-import { CutomButton, CustomStepper } from "../../components/ui";
+import { CustomStepper } from "../../components/ui";
 
 const Login = () => {
   const history = useNavigate();
-  const context = useContext(AppContext);
-  const setValue: React.Dispatch<React.SetStateAction<any>> = context
-    ? context[1]
-    : () => {};
+  const toast = useToast({
+    position: "top-right",
+    duration: 3000,
+  });
 
   const { mutate } = useMutation({
     mutationFn: () => signInWithGoogle(),
@@ -26,59 +24,51 @@ const Login = () => {
 
       const { displayName, email, emailVerified, photoURL } = data;
 
-      await Promise.all([
-        setValue({
-          key: "user",
-          value: { name: displayName, email, emailVerified, photoURL },
-        }),
-        setValue({ key: "isSignedIn", value: true }),
-        storeCookie(accessToken),
-      ]).then(() => history("/dashboard"));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: displayName,
+          email,
+          emailVerified,
+          photoURL,
+          isSignedIn: true,
+        })
+      );
+      storeCookie(accessToken);
+      toast({
+        description: "You've logged in successfully",
+        status: "success",
+        position: "top-right",
+        duration: 2000,
+        onCloseComplete: () => {
+          history("/dashboard");
+        },
+      });
     },
   });
 
   const steps = [
     {
       component: (
-        <Box>
+        <Flex flexDirection={"column"} gap={5} width={"100%"}>
           <p
             className="form"
-            style={{ textAlign: "start", fontWeight: 550, fontSize: "32px" }}
+            style={{ textAlign: "center", fontWeight: 700, fontSize: "40px" }}
           >
-            Hi 👋, welcome back!.
+            Get started with Afro-bank cards
           </p>
           <LoginForm onSubmit={(e) => mutate(e)} />
-        </Box>
+          <p style={{ textAlign: "center", fontSize: "14px", fontWeight: 550 }}>
+            By signing up you agree to the Afro-bank cards policy
+          </p>
+        </Flex>
       ),
     },
   ];
 
   return (
     <Box height={"100vh"}>
-      <AuthWrapper
-        render={() => {
-          return (
-            <>
-              <Text fontSize={"sm"} fontWeight={450}>
-                Don't have an account?
-              </Text>
-              <Link to={"/"}>
-                <CutomButton
-                  btnProps={{
-                    background: "#b4646463",
-                    borderRadius: "20px",
-                    height: "35px",
-                    color: "white",
-                    fontWeight: 450,
-                    fontSize: "14px",
-                  }}
-                  text="Create account"
-                />
-              </Link>
-            </>
-          );
-        }}
-      >
+      <AuthWrapper>
         <CustomStepper steps={steps} step={steps.length - 1} />
       </AuthWrapper>
     </Box>

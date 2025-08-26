@@ -1,14 +1,10 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
-import { FaChalkboardTeacher } from "react-icons/fa";
-import { SiGoogleclassroom } from "react-icons/si";
 import { PiStudentBold } from "react-icons/pi";
 import { ImUserTie } from "react-icons/im";
 import { RiArtboardLine } from "react-icons/ri";
 import ComponentWrapper from "../../../Layout";
-import PieChart from "../../../components/charts/Piechart";
 
-const Wrapper = (params: any) => {
+const Wrapper = (params: any | unknown) => {
   const { number, header, bg, icon } = params;
 
   const IconComponent = icon;
@@ -42,11 +38,9 @@ const Wrapper = (params: any) => {
 };
 
 const UserDashboard = () => {
-  const { students, classes, ...rest } = useSelector((data: any) => data.user);
+  const classes = [];
 
-  const totalStudents = classes.flatMap(
-    (cls: any) => students[cls.class_id] || []
-  );
+  const totalStudents = [];
 
   const commonProps = {
     size: "35px",

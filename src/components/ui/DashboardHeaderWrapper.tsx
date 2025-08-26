@@ -2,9 +2,7 @@
 import { Flex, Box } from "@chakra-ui/react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
-interface Props {
-  text: string;
-}
+import { getUser } from "../../services/auth";
 
 const Wrapper = (props: any) => {
   return (
@@ -21,15 +19,13 @@ const Wrapper = (props: any) => {
   );
 };
 
-const DashBoardHeaderWrapper = (props: Props) => {
-  // const { text } = props;
+const DashBoardHeaderWrapper = () => {
+  const user = getUser();
 
   const commonProps = {
     size: "20px",
     color: "#35293D",
   };
-
-  // const { payLoad }: any = useSelector((data: any) => data?.user);
 
   return (
     <Flex width={"100%"} position={"relative"}>
@@ -40,21 +36,18 @@ const DashBoardHeaderWrapper = (props: Props) => {
             <IoMdNotificationsOutline {...commonProps} />
           </Wrapper>
           <Wrapper>
-            <CiUser {...commonProps} />
+            {user?.photoURL ? (
+              <img
+                src={user?.photoURL}
+                style={{ borderRadius: "50px" }}
+                height={"100%"}
+                width={"100%"}
+              />
+            ) : (
+              <CiUser {...commonProps} />
+            )}
           </Wrapper>
         </Flex>
-        {/* <Box>
-          <Text fontSize={"28px"} textTransform={"capitalize"} fontWeight={450}>
-            {text}
-          </Text>
-        </Box> */}
-        {/* <Box>
-          <CustomMenu
-            btnText={"user details"}
-            menuList={[{ text: "Settin" }]}
-          /> */}
-        {/* <Text>user details</Text> */}
-        {/* </Box> */}
       </Flex>
     </Flex>
   );

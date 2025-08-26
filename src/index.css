@@ -11,7 +11,8 @@ body {
 .form {
   display: flex;
   flex-direction: column;
-  width: 450px;
+  width: 100%;
+  /* max-width: 500px !important; */
 }
 
 input {

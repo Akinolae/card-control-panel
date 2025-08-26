@@ -1,12 +1,16 @@
 import { Box, Flex } from "@chakra-ui/react";
 import ComponentWrapper from "../../Layout";
+import { ReactNode } from "react";
 
-const AuthWrapper = (props: any) => {
+interface AuthWrapperProps {
+  children: ReactNode;
+}
+
+const AuthWrapper = (props: AuthWrapperProps) => {
   return (
     <Box height={"100vh"} width={"100%"}>
       <Flex h={"100%"}>
         <Box
-          borderRadius={"30px"}
           height={"100%"}
           padding={"2%"}
           display={"flex"}

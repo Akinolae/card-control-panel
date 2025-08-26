@@ -1,12 +1,10 @@
 import { Navigate } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "./Context";
 
 const ProtectedRoute = ({ ...props }) => {
-  const context = useContext(AppContext);
+  const user = localStorage.getItem("user");
+  const userData = user ? JSON.parse(user ?? "") : null;
 
-  const data = context ? context[0] : null;
-  if (!data?.isSignedIn) {
+  if (!userData || !userData.isSignedIn) {
     return <Navigate to={"/login"} replace />;
   }
   return props.children;
