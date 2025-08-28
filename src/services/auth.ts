@@ -8,6 +8,7 @@ const logOut = () => localStorage.clear();
 const signIn = async () => {
   const res = await signInWithGoogle();
   const { stsTokenManager }: any = res;
+
   const { accessToken }: { accessToken: string; refreshToken: string } =
     stsTokenManager;
   const { displayName, email, emailVerified, photoURL } = res;
@@ -22,6 +23,7 @@ const signIn = async () => {
       isSignedIn: true,
     })
   );
+
   storeCookie(accessToken);
 };
 
