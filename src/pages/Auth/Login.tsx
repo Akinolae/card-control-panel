@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AuthWrapper from "./AuthWrapper";
 import { Box, Flex, useToast } from "@chakra-ui/react";
-import LoginForm from "../../Forms/Auth/LoginForm";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { CustomStepper } from "../../components/ui";
+import { CustomStepper, CutomButton } from "../../components/ui";
 import { signIn } from "../../services/auth";
+import { AiFillGoogleCircle } from "react-icons/ai";
+import { BsGithub } from "react-icons/bs";
 
 const Login = () => {
   const history = useNavigate();
@@ -15,7 +16,8 @@ const Login = () => {
   });
 
   const { mutate } = useMutation({
-    mutationFn: () => signIn(),
+    mutationFn: (method: string) => signIn(method),
+
     onSuccess: async () => {
       toast({
         description: "You've logged in successfully",
@@ -27,7 +29,17 @@ const Login = () => {
         },
       });
     },
+    onError: () => {
+      toast({
+        description: "Login failed. Please try again.",
+        status: "error",
+      });
+    },
   });
+
+  const handleLogin = (method: string) => {
+    mutate(method);
+  };
 
   const steps = [
     {
@@ -39,7 +51,38 @@ const Login = () => {
           >
             Get started with Afro-bank cards
           </p>
-          <LoginForm onSubmit={(e) => mutate(e)} />
+          <Flex gap={5} margin={"auto"}>
+            <CutomButton
+              btnProps={{
+                background: "red",
+                height: "50px",
+                color: "white",
+                fontWeight: 450,
+                fontSize: "16px",
+                type: "submit",
+                borderRadius: "50px",
+                onClick: () => handleLogin("google"),
+              }}
+              text="Login with Google"
+              iconPosition="before"
+              icon={<AiFillGoogleCircle size={30} />}
+            />
+            <CutomButton
+              btnProps={{
+                background: "red",
+                height: "50px",
+                color: "white",
+                fontWeight: 450,
+                fontSize: "16px",
+                type: "submit",
+                borderRadius: "50px",
+                onClick: () => handleLogin("git"),
+              }}
+              text="Login with GitHub"
+              iconPosition="before"
+              icon={<BsGithub size={30} />}
+            />
+          </Flex>
           <p style={{ textAlign: "center", fontSize: "14px", fontWeight: 550 }}>
             By signing up you agree to the Afro-bank cards policy
           </p>

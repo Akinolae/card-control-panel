@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@auth0/auth0-react": "^2.4.0",
-    "@aws-sdk/client-cognito-identity-provider": "^3.540.0",
     "@chakra-ui/cli": "^3.0.2",
     "@chakra-ui/react": "2.2.9",
     "@chakra-ui/react-types": "^2.0.6",

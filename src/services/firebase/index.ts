@@ -12,7 +12,7 @@ const firebaseConfig = {
   projectId: import.meta.env.VITE_PROJECT_ID,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
   messagingSenderId: import.meta.env.VITE_SENDER_ID,
-  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
+  // measurementId: import.meta.env.VITE_MEASUREMENT_ID,
   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
 };
 
@@ -36,8 +36,9 @@ const signInWithGitHub = async () => {
   const provider = new GithubAuthProvider();
 
   provider.setCustomParameters({
-    allow_signup: "false",
+    allow_signup: "true",
   });
+
   try {
     const result = await signInWithPopup(auth, provider);
     // The signed-in user info.

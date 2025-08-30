@@ -2,6 +2,7 @@
 import { Flex } from "@chakra-ui/react";
 import { CutomButton } from "../../components/ui";
 import { AiFillGoogleCircle } from "react-icons/ai";
+import { BsGithub } from "react-icons/bs";
 // import { BsGithub } from "react-icons/bs";
 
 interface LoginFormProps {
@@ -27,7 +28,7 @@ const LoginForm = (props: LoginFormProps) => {
         iconPosition="before"
         icon={<AiFillGoogleCircle size={30} />}
       />
-      {/* <CutomButton
+      <CutomButton
         btnProps={{
           background: "red",
           height: "50px",
@@ -41,7 +42,7 @@ const LoginForm = (props: LoginFormProps) => {
         text="Login with GitHub"
         iconPosition="before"
         icon={<BsGithub size={30} />}
-      /> */}
+      />
     </Flex>
   );
 };
