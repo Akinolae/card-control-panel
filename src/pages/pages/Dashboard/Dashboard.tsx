@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { PiStudentBold } from "react-icons/pi";
 import { ImUserTie } from "react-icons/im";
 import { RiArtboardLine } from "react-icons/ri";
 import ComponentWrapper from "../../../Layout";
+import { useQuery } from "@tanstack/react-query";
+import { getCards } from "../../../services/cards";
 
 const Wrapper = (params: any | unknown) => {
   const { number, header, bg, icon } = params;
@@ -42,6 +45,16 @@ const UserDashboard = () => {
 
   const totalStudents = [];
 
+  const {
+    data: dts,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["cards"],
+    queryFn: getCards,
+  });
+
+  console.log({ dts, error });
   const commonProps = {
     size: "35px",
   };
@@ -91,6 +104,7 @@ const UserDashboard = () => {
                   key={index}
                   header={item.header}
                   number={item.number}
+                  onClick={refetch}
                   bg={item.bg}
                   icon={item.icon}
                 />

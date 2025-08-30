@@ -1,12 +1,8 @@
 import { NavLink } from "react-router-dom";
-// import { MdDashboard } from "react-icons/md";
 import { Flex, Text } from "@chakra-ui/react";
-// import { FaPowerOff } from "react-icons/fa6";
-import { RiAdminFill } from "react-icons/ri";
-// import { GiTeacher } from "react-icons/gi";
 import { RiHome5Line } from "react-icons/ri";
-import { PiStudentBold } from "react-icons/pi";
-
+import { FaCreditCard } from "react-icons/fa6";
+import { FaMoneyBills } from "react-icons/fa6";
 const Sidebar = () => {
   const routes = [
     {
@@ -15,25 +11,15 @@ const Sidebar = () => {
       icon: <RiHome5Line />,
     },
     {
-      name: "Students",
-      path: "students",
-      icon: <PiStudentBold />,
+      name: "Cards",
+      path: "cards",
+      icon: <FaCreditCard />,
     },
     {
-      name: "Admins",
-      path: "admins",
-      icon: <RiAdminFill />,
+      name: "Transactions",
+      path: "transactions",
+      icon: <FaMoneyBills />,
     },
-    // {
-    //   name: "Teachers",
-    //   path: "teachers",
-    //   icon: <GiTeacher />,
-    // },
-    // {
-    //   name: "Log out",
-    //   path: "/logout",
-    //   icon: <FaPowerOff />,
-    // },
   ];
 
   return (
@@ -50,7 +36,6 @@ const Sidebar = () => {
         background={"#FAF9FE"}
       >
         {routes.map((data, i) => {
-          const isLogOut = data.name === "Log out";
           return (
             <>
               {/* {isLogOut ? (

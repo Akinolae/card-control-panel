@@ -2,15 +2,16 @@
 import { storeCookie } from "../utils/cookieUtils";
 import { signInWithGitHub, signInWithGoogle } from "./firebase";
 
+const USER_STORAGE_KEY = "user";
+export type AuthProvider = "google" | "github";
 export interface AuthUser {
   name: string | null;
   email: string | null;
   emailVerified: boolean;
   photoURL: string | null;
   isSignedIn: boolean;
+  provider: string | null;
 }
-
-const USER_STORAGE_KEY = "user";
 
 const getUser = (): AuthUser | null => {
   try {
@@ -26,29 +27,52 @@ const logOut = () => {
   localStorage.removeItem(USER_STORAGE_KEY);
 };
 
-const signIn = async (method: string): Promise<void> => {
+const extractAuthUser = (rawUser: any): AuthUser => ({
+  name: rawUser.displayName ?? null,
+  email: rawUser.email ?? null,
+  emailVerified: !!rawUser.emailVerified,
+  photoURL: rawUser.photoURL ?? null,
+  isSignedIn: true,
+  provider: rawUser.provider ?? null,
+});
+
+const signIn = async (
+  provider: AuthProvider,
+  options?: { cookieRefreshInterval?: number }
+): Promise<AuthUser | null> => {
   try {
-    const res =
-      method === "git" ? await signInWithGitHub() : await signInWithGoogle();
-    const { stsTokenManager }: any = res;
-    if (!res || !stsTokenManager)
-      throw new Error("No token manager in response");
+    let firebaseUser: any;
+    switch (provider) {
+      case "github":
+        firebaseUser = await signInWithGitHub();
+        break;
+      case "google":
+      default:
+        firebaseUser = await signInWithGoogle();
+        break;
+    }
 
-    const accessToken: string = stsTokenManager.accessToken;
-    const { displayName, email, emailVerified, photoURL } = res;
+    if (!firebaseUser?.stsTokenManager?.accessToken) {
+      throw new Error(
+        "Token manager/access token missing from sign-in response"
+      );
+    }
 
-    const user: AuthUser = {
-      name: displayName ?? null,
-      email: email ?? null,
-      emailVerified: !!emailVerified,
-      photoURL: photoURL ?? null,
-      isSignedIn: true,
-    };
+    const accessToken = firebaseUser.stsTokenManager.accessToken;
+    const user = extractAuthUser({ ...firebaseUser, provider });
 
     localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
-    storeCookie(accessToken);
+    storeCookie(
+      accessToken,
+      options?.cookieRefreshInterval
+        ? { REFRESH_INTERVAL: options.cookieRefreshInterval }
+        : undefined
+    );
+
+    return user;
   } catch (error) {
     console.error("Sign-in failed:", error);
+    return null;
   }
 };
 

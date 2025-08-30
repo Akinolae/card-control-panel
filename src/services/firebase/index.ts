@@ -23,7 +23,8 @@ const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
-    // The signed-in user info.
+    console.log(result, "signInWithGoogle result");
+
     const user = result.user;
     return user;
   } catch (error) {
@@ -41,7 +42,7 @@ const signInWithGitHub = async () => {
 
   try {
     const result = await signInWithPopup(auth, provider);
-    // The signed-in user info.
+    console.log(result, "signInWithGitHub result");
     const user = result.user;
     return user;
   } catch (error) {

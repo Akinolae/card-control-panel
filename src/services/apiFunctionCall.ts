@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { getCookie } from "../utils/cookieUtils";
 
 const client = axios.create({
-  baseURL: "http://localhost:3001/",
+  baseURL: "http://localhost:3000/",
   headers: {
     "content-type": "application/json",
   },
@@ -60,7 +60,7 @@ export const apiCallFunction = async (params: AxiosRequestParams) => {
       endpoint call doesn't accept a nullible | undefined value.
     */
   const res = await fn(
-    ...["graphql", params?.data, authorization].filter(
+    ...[params.url, params?.data, authorization].filter(
       (value) => value !== undefined
     )
   );

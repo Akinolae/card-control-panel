@@ -28,11 +28,11 @@ const route = [
         component: <UserDashboard />,
       },
       {
-        path: "students",
+        path: "cards",
         component: <Students />,
       },
       {
-        path: "admins",
+        path: "transactions",
         component: <Admins />,
       },
     ],

@@ -1,6 +1,5 @@
 import { Formik, Form } from "formik";
 import { Box, Flex, Select } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
 import { CustomInput } from "../components/ui/CustomInput";
 import { CutomButton } from "../components/ui";
 import * as yup from "yup";
@@ -35,7 +34,7 @@ const validationSchema = yup.object().shape({
 });
 
 const AddStudent = ({ onSubmit }: any) => {
-  const { classes } = useSelector((data: any) => data.user);
+  const classes: any | unknown = [];
   const initialValues: InitialValues = {
     class_id: "",
     student: {

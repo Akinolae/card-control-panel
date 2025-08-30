@@ -4,7 +4,7 @@ import { Box, Flex, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { CustomStepper, CutomButton } from "../../components/ui";
-import { signIn } from "../../services/auth";
+import { AuthProvider, signIn } from "../../services/auth";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { BsGithub } from "react-icons/bs";
 
@@ -15,8 +15,8 @@ const Login = () => {
     duration: 3000,
   });
 
-  const { mutate } = useMutation({
-    mutationFn: (method: string) => signIn(method),
+  const { mutate, isPending } = useMutation({
+    mutationFn: (method: AuthProvider) => signIn(method),
 
     onSuccess: async () => {
       toast({
@@ -37,7 +37,7 @@ const Login = () => {
     },
   });
 
-  const handleLogin = (method: string) => {
+  const handleLogin = (method: AuthProvider) => {
     mutate(method);
   };
 
@@ -61,6 +61,7 @@ const Login = () => {
                 fontSize: "16px",
                 type: "submit",
                 borderRadius: "50px",
+                disabled: isPending,
                 onClick: () => handleLogin("google"),
               }}
               text="Login with Google"
@@ -76,7 +77,8 @@ const Login = () => {
                 fontSize: "16px",
                 type: "submit",
                 borderRadius: "50px",
-                onClick: () => handleLogin("git"),
+                disabled: isPending,
+                onClick: () => handleLogin("github"),
               }}
               text="Login with GitHub"
               iconPosition="before"
