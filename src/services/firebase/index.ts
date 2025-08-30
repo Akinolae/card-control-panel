@@ -12,7 +12,6 @@ const firebaseConfig = {
   projectId: import.meta.env.VITE_PROJECT_ID,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
   messagingSenderId: import.meta.env.VITE_SENDER_ID,
-  // measurementId: import.meta.env.VITE_MEASUREMENT_ID,
   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
 };
 
@@ -23,12 +22,10 @@ const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
-    console.log(result, "signInWithGoogle result");
 
     const user = result.user;
     return user;
   } catch (error) {
-    console.error("Error signing in with Google:", error);
     throw error;
   }
 };
@@ -42,11 +39,9 @@ const signInWithGitHub = async () => {
 
   try {
     const result = await signInWithPopup(auth, provider);
-    console.log(result, "signInWithGitHub result");
     const user = result.user;
     return user;
   } catch (error) {
-    console.error("Error signing in with GitHub:", error);
     throw error;
   }
 };
